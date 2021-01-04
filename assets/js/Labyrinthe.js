@@ -8,7 +8,7 @@ let Labyrinthe = (() => {
     let rows = null;
 
     /**
-     * Object représentant un cellule du labyrinthe
+     * Object représentant une cellule du labyrinthe.
      */
     class LabyCell extends HTMLElement {
         wasVisited;
@@ -22,6 +22,10 @@ let Labyrinthe = (() => {
             super();
         }
 
+        /**
+         * Redimensionne une cellule selon la largeur donnée.
+         * @param {int} cellWidth Largeur d'une cellule après calcul du ratio écran.
+         */
         setSize(cellWidth) {
             this.style.position = 'absolute';
             this.style.width = cellWidth + 'px';
@@ -31,12 +35,23 @@ let Labyrinthe = (() => {
             this.drawWalls();
         }
 
+        /**
+         * Permet de définir la position de la cellule.
+         * @param {int} col La colonne où se trouve la cellule.
+         * @param {int} row La ligne où se trouve la cellule.
+         */
         initCell(col, row) {
             this.wasVisited = false;
             this.col = col;
             this.row = row;
         }
 
+        /**
+         * Initialize les murs.
+         * Génère aussi la liste des voisins, selon la position ou la présence de murs.
+         * @param {boolean} eastWall Si true le mur Est est présent.
+         * @param {boolean} southWall Si true le mur Sud est présent.
+         */
         initWalls(eastWall, southWall) {
             this.eastWall = eastWall;
             this.southWall = southWall;
@@ -66,6 +81,9 @@ let Labyrinthe = (() => {
             }
         }
 
+        /**
+         * Dessine les murs de la cellule.
+         */
         drawWalls() {
             this.style.borderRight = this.eastWall ? '1px solid #000' : '';
             this.style.borderBottom = this.southWall ? '1px solid #000': '';
@@ -80,8 +98,8 @@ let Labyrinthe = (() => {
     /**
      * Permet de rechercher un chemin dans le labyrinthe.
      * Se rappelle récursivement jusqu'à ce que le labyrinthe soit complété.
-     * @param {int} x La colonne de la cellule à cherhcer
-     * @param {int} y La ligne de la cellule à chercher
+     * @param {int} x La colonne de la cellule à cherhcer.
+     * @param {int} y La ligne de la cellule à chercher.
      */
     function search(x, y) {
         // On marque la case comme ayant été visitée
@@ -163,7 +181,7 @@ let Labyrinthe = (() => {
     }
 
     /**
-     * Redimensionne les cellules du labyrinthe selon le ratio de la vue
+     * Redimensionne les cellules du labyrinthe selon le ratio de la vue.
      */
     function resizeGamefield() {
         // On calcule d'abord le ratio
@@ -187,9 +205,9 @@ let Labyrinthe = (() => {
     /**
      * Permet de définir le div container du jeu, et optionellement définir la taille
      * du labyrinthe.  Par défaut le labyrinthe fait 20 lignes par 40 colonnes.
-     * @param {HTMLDivElement} gameContainer Le div container du jeu
-     * @param {int} col Le nombre de colonnes du labyrinthe
-     * @param {int} row Le nombre de ligne du labyrinthe
+     * @param {HTMLDivElement} gameContainer Le div container du jeu.
+     * @param {int} col Le nombre de colonnes du labyrinthe.
+     * @param {int} row Le nombre de ligne du labyrinthe.
      */
     function setGamefield(gameContainer, col = 35, row = 20) {
         labyrinth = [];
@@ -223,7 +241,7 @@ let Labyrinthe = (() => {
     }
 
     /**
-     * Démarre le jeu
+     * Démarre le jeu.
      */
     function startGame() {
         // On commence la génération par la case x = 0 et y = 0, en haut à gauche
