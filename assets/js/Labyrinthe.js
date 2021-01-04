@@ -207,7 +207,7 @@ let Labyrinthe = (() => {
 
     /**
      * Permet de définir le div container du jeu, et optionellement définir la taille
-     * du labyrinthe.  Par défaut le labyrinthe fait 20 lignes par 40 colonnes.
+     * du labyrinthe.  Par défaut le labyrinthe fait 35 colonnes par 20 lignes.
      * @param {HTMLDivElement} gameContainer Le div container du jeu.
      * @param {int} col Le nombre de colonnes du labyrinthe.
      * @param {int} row Le nombre de ligne du labyrinthe.
