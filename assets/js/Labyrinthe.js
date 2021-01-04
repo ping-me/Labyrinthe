@@ -111,68 +111,71 @@ let Labyrinthe = (() => {
             labyrinth[x + y * cols].style.backgroundColor = '#888';
         }
 
-        // Maintenant pour chaque côté, on va vérifier si la case a été visitée
-        // Si elle ne l'a pas été, on fait un appel recursif de search sur la case non visitée
+        // Maintenant pour chaque côté, on va vérifier si la cellule a été visitée.
+        // Si elle ne l'a pas été, on fait un appel recursif de search
+        // sur la cellule non visitée.
         while(Object.keys(labyrinth[x + y * cols].unknownNeighbors).length) {
-            // Liste des clé des voisins restant
+            // Liste des clés des cellules voisines restantes
             neighbors = Object.keys(labyrinth[x + y * cols].unknownNeighbors);
+            // Sélection aléatoire d'une cellule voisine
             nextNeighbor = Math.floor(Math.random() * neighbors.length);
+            // Récupération des coordonnées de la cellule voisine
             nextNeighborCoord = labyrinth[x + y * cols].unknownNeighbors[neighbors[nextNeighbor]];
-            nextNeighborI = nextNeighborCoord[0] + nextNeighborCoord[1] * cols;
+            nextNeighborIndex = nextNeighborCoord[0] + nextNeighborCoord[1] * cols;
             delete labyrinth[x + y * cols].unknownNeighbors[neighbors[nextNeighbor]];
             // La case a-t-elle été visitée ?
-            if (labyrinth[nextNeighborI].wasVisited) {
+            if (labyrinth[nextNeighborIndex].wasVisited) {
                 // Oui : on vérifie quel voisin c'est pour rajouter le bon mur
                 if (neighbors[nextNeighbor] === 'north') {
                     // Voisin du haut : on lui rajoute un mur au sud
-                    labyrinth[nextNeighborI].southWall = true;
-                    labyrinth[nextNeighborI].drawWalls();
+                    labyrinth[nextNeighborIndex].southWall = true;
+                    labyrinth[nextNeighborIndex].drawWalls();
                 }
-                else if (neighbors[nextNeighbor] == 'east') {
+                else if (neighbors[nextNeighbor] === 'east') {
                     // Voisin de droite : on rajoute un mur à droite à la cellule en cours
                     labyrinth[x + y * cols].eastWall = true;
                     labyrinth[x + y * cols].drawWalls();
                 }
-                else if (neighbors[nextNeighbor] == 'south') {
+                else if (neighbors[nextNeighbor] === 'south') {
                     // Voisin du bas : on rajoute un mur au sud à la cellule en cours
                     labyrinth[x + y * cols].southWall = true;
                     labyrinth[x + y * cols].drawWalls();
                 }
-                else if (neighbors[nextNeighbor] == 'west') {
+                else if (neighbors[nextNeighbor] === 'west') {
                     // Voisin de droite : on lui rajoute un mur à gauche
-                    labyrinth[nextNeighborI].eastWall = true;
-                    labyrinth[nextNeighborI].drawWalls();
+                    labyrinth[nextNeighborIndex].eastWall = true;
+                    labyrinth[nextNeighborIndex].drawWalls();
                 }
             }
             else {
-                // Si non visité, on lui indique que la case courante est visitée
+                // Si non visité, on lui indique que la cellule courante est visitée
                 if (neighbors[nextNeighbor] === 'north') {
-                    // Voisin du haut : on lui indique que le voisin du sud a été visité
-                    if (labyrinth[nextNeighborI].unknownNeighbors.hasOwnProperty('south')) {
-                        delete labyrinth[nextNeighborI].unknownNeighbors['south'];
+                    // Voisin du haut : on lui indique que la cellule du sud a été visité
+                    if (labyrinth[nextNeighborIndex].unknownNeighbors.hasOwnProperty('south')) {
+                        delete labyrinth[nextNeighborIndex].unknownNeighbors['south'];
                     }
-                    labyrinth[nextNeighborI].drawWalls();
+                    labyrinth[nextNeighborIndex].drawWalls();
                 }
-                else if (neighbors[nextNeighbor] == 'east') {
-                    // Voisin de droite : on lui indique que le voisin à l'ouest a été visité
-                    if (labyrinth[nextNeighborI].unknownNeighbors.hasOwnProperty('west')) {
-                        delete labyrinth[nextNeighborI].unknownNeighbors['west'];
+                else if (neighbors[nextNeighbor] === 'east') {
+                    // Voisin de droite : on lui indique que la cellule à l'ouest a été visité
+                    if (labyrinth[nextNeighborIndex].unknownNeighbors.hasOwnProperty('west')) {
+                        delete labyrinth[nextNeighborIndex].unknownNeighbors['west'];
                     }
-                    labyrinth[nextNeighborI].drawWalls();
+                    labyrinth[nextNeighborIndex].drawWalls();
                 }
-                else if (neighbors[nextNeighbor] == 'south') {
-                    // Voisin du bas : on lui indique que le voisin au nord a été visité
-                    if (labyrinth[nextNeighborI].unknownNeighbors.hasOwnProperty('north')) {
-                        delete labyrinth[nextNeighborI].unknownNeighbors['north'];
+                else if (neighbors[nextNeighbor] === 'south') {
+                    // Voisin du bas : on lui indique que la cellule au nord a été visité
+                    if (labyrinth[nextNeighborIndex].unknownNeighbors.hasOwnProperty('north')) {
+                        delete labyrinth[nextNeighborIndex].unknownNeighbors['north'];
                     }
-                    labyrinth[nextNeighborI].drawWalls();
+                    labyrinth[nextNeighborIndex].drawWalls();
                 }
-                else if (neighbors[nextNeighbor] == 'west') {
-                    // Voisin de droite : on lui indique que le voisin à l'est a été visité
-                    if (labyrinth[nextNeighborI].unknownNeighbors.hasOwnProperty('east')) {
-                        delete labyrinth[nextNeighborI].unknownNeighbors['east'];
+                else if (neighbors[nextNeighbor] === 'west') {
+                    // Voisin de droite : on lui indique que la cellule à l'est a été visité
+                    if (labyrinth[nextNeighborIndex].unknownNeighbors.hasOwnProperty('east')) {
+                        delete labyrinth[nextNeighborIndex].unknownNeighbors['east'];
                     }
-                    labyrinth[nextNeighborI].drawWalls();
+                    labyrinth[nextNeighborIndex].drawWalls();
                 }
                 // Et on la visite
                 search(nextNeighborCoord[0], nextNeighborCoord[1]);
@@ -235,7 +238,7 @@ let Labyrinthe = (() => {
             }
         }
 
-        // On redimesionne
+        // On redimensionne
         resizeGamefield();
         window.onresize = resizeGamefield;
     }
