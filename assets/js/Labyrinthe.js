@@ -67,13 +67,13 @@ let Labyrinthe = (() => {
                 west: [this.col - 1, this.row]
             };
             // Suppression des voisins inutiles pour les cellules périphériques
-            if (this.row == 0) {
+            if (this.row === 0) {
                 delete this.unknownNeighbors['north'];
             }
             else if (this.southWall) {
                 delete this.unknownNeighbors['south'];
             }
-            if (this.col == 0) {
+            if (this.col === 0) {
                 delete this.unknownNeighbors['west'];
             }
             else if (this.eastWall) {
@@ -116,12 +116,12 @@ let Labyrinthe = (() => {
         // sur la cellule non visitée.
         while(Object.keys(labyrinth[x + y * cols].unknownNeighbors).length) {
             // Liste des clés des cellules voisines restantes
-            neighbors = Object.keys(labyrinth[x + y * cols].unknownNeighbors);
+            let neighbors = Object.keys(labyrinth[x + y * cols].unknownNeighbors);
             // Sélection aléatoire d'une cellule voisine
-            nextNeighbor = Math.floor(Math.random() * neighbors.length);
+            let nextNeighbor = Math.floor(Math.random() * neighbors.length);
             // Récupération des coordonnées de la cellule voisine
-            nextNeighborCoord = labyrinth[x + y * cols].unknownNeighbors[neighbors[nextNeighbor]];
-            nextNeighborIndex = nextNeighborCoord[0] + nextNeighborCoord[1] * cols;
+            let nextNeighborCoord = labyrinth[x + y * cols].unknownNeighbors[neighbors[nextNeighbor]];
+            let nextNeighborIndex = nextNeighborCoord[0] + nextNeighborCoord[1] * cols;
             delete labyrinth[x + y * cols].unknownNeighbors[neighbors[nextNeighbor]];
             // La case a-t-elle été visitée ?
             if (labyrinth[nextNeighborIndex].wasVisited) {
@@ -187,6 +187,7 @@ let Labyrinthe = (() => {
      * Redimensionne les cellules du labyrinthe selon le ratio de la vue.
      */
     function resizeGamefield() {
+        let cellWidth;
         // On calcule d'abord le ratio
         if (gameField.clientHeight > (gameField.clientHeight * cols / rows)) {
             // On tient en hauteur
@@ -223,13 +224,13 @@ let Labyrinthe = (() => {
             for (let x = 0; x < cols; x++) {
                 let hasEastWall = false;
                 let hasSouthWall = false;
-                if (y == (rows - 1)) {
+                if (y === (rows - 1)) {
                     hasSouthWall = true;
                 }
-                if (x == (cols - 1)) {
+                if (x === (cols - 1)) {
                     hasEastWall = true;
                 }
-                cellToAdd = document.createElement('laby-cell');
+                let cellToAdd = document.createElement('laby-cell');
                 cellToAdd.initCell(x, y);
                 cellToAdd.backgroundColor = '#888';
                 cellToAdd.initWalls(hasEastWall, hasSouthWall);
