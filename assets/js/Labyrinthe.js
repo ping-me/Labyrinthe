@@ -65,7 +65,7 @@ let Labyrinthe = (() => {
                 south: [this.col, this.row + 1],
                 // Voisin de gauche
                 west: [this.col - 1, this.row]
-            };
+            }
             // Suppression des voisins inutiles pour les cellules périphériques
             if (this.row === 0) {
                 delete this.unknownNeighbors['north'];
@@ -98,87 +98,78 @@ let Labyrinthe = (() => {
     /**
      * Permet de rechercher un chemin dans le labyrinthe.
      * Se rappelle récursivement jusqu'à ce que le labyrinthe soit complété.
-     * @param {int} x La colonne de la cellule à cherhcer.
-     * @param {int} y La ligne de la cellule à chercher.
+     * @param {int} currentCell La cellule à chercher.  Par défaut, la première à l'indice 0.
      */
-    function search(x, y) {
+    function search(currentCell = 0) {
         // On marque la case comme ayant été visitée
-        labyrinth[x + y * cols].wasVisited = true;
-        if (labyrinth[x + y * cols].wasVisited) {
-            labyrinth[x + y * cols].style.backgroundColor = '#fff';
-        }
-        else {
-            labyrinth[x + y * cols].style.backgroundColor = '#888';
-        }
+        labyrinth[currentCell].wasVisited = true;
 
         // Maintenant pour chaque côté, on va vérifier si la cellule a été visitée.
         // Si elle ne l'a pas été, on fait un appel recursif de search
         // sur la cellule non visitée.
-        while(Object.keys(labyrinth[x + y * cols].unknownNeighbors).length) {
-            // Liste des clés des cellules voisines restantes
-            let neighbors = Object.keys(labyrinth[x + y * cols].unknownNeighbors);
+        while(Object.keys(labyrinth[currentCell].unknownNeighbors).length) {
             // Sélection aléatoire d'une cellule voisine
-            let nextNeighbor = Math.floor(Math.random() * neighbors.length);
+            let cardinal = Object.keys(labyrinth[currentCell].unknownNeighbors)[Math.floor(Math.random() * Object.keys(labyrinth[currentCell].unknownNeighbors).length)];
             // Récupération des coordonnées de la cellule voisine
-            let nextNeighborCoord = labyrinth[x + y * cols].unknownNeighbors[neighbors[nextNeighbor]];
-            let nextNeighborIndex = nextNeighborCoord[0] + nextNeighborCoord[1] * cols;
-            delete labyrinth[x + y * cols].unknownNeighbors[neighbors[nextNeighbor]];
+            let nextCellCoord = labyrinth[currentCell].unknownNeighbors[cardinal];
+            let nextCell = nextCellCoord[0] + nextCellCoord[1] * cols;
+            delete labyrinth[currentCell].unknownNeighbors[cardinal];
             // La case a-t-elle été visitée ?
-            if (labyrinth[nextNeighborIndex].wasVisited) {
+            if (labyrinth[nextCell].wasVisited) {
                 // Oui : on vérifie quel voisin c'est pour rajouter le bon mur
-                if (neighbors[nextNeighbor] === 'north') {
+                if (cardinal === 'north') {
                     // Voisin du haut : on lui rajoute un mur au sud
-                    labyrinth[nextNeighborIndex].southWall = true;
-                    labyrinth[nextNeighborIndex].drawWalls();
+                    labyrinth[nextCell].southWall = true;
+                    labyrinth[nextCell].drawWalls();
                 }
-                else if (neighbors[nextNeighbor] === 'east') {
+                else if (cardinal === 'east') {
                     // Voisin de droite : on rajoute un mur à droite à la cellule en cours
-                    labyrinth[x + y * cols].eastWall = true;
-                    labyrinth[x + y * cols].drawWalls();
+                    labyrinth[currentCell].eastWall = true;
+                    labyrinth[currentCell].drawWalls();
                 }
-                else if (neighbors[nextNeighbor] === 'south') {
+                else if (cardinal === 'south') {
                     // Voisin du bas : on rajoute un mur au sud à la cellule en cours
-                    labyrinth[x + y * cols].southWall = true;
-                    labyrinth[x + y * cols].drawWalls();
+                    labyrinth[currentCell].southWall = true;
+                    labyrinth[currentCell].drawWalls();
                 }
-                else if (neighbors[nextNeighbor] === 'west') {
-                    // Voisin de droite : on lui rajoute un mur à gauche
-                    labyrinth[nextNeighborIndex].eastWall = true;
-                    labyrinth[nextNeighborIndex].drawWalls();
+                else if (cardinal === 'west') {
+                    // Voisin de gauche : on lui rajoute un mur à droite
+                    labyrinth[nextCell].eastWall = true;
+                    labyrinth[nextCell].drawWalls();
                 }
             }
             else {
                 // Si non visité, on lui indique que la cellule courante est visitée
-                if (neighbors[nextNeighbor] === 'north') {
+                if (cardinal === 'north') {
                     // Voisin du haut : on lui indique que la cellule du sud a été visité
-                    if (labyrinth[nextNeighborIndex].unknownNeighbors.hasOwnProperty('south')) {
-                        delete labyrinth[nextNeighborIndex].unknownNeighbors['south'];
+                    if (labyrinth[nextCell].unknownNeighbors.hasOwnProperty('south')) {
+                        delete labyrinth[nextCell].unknownNeighbors['south'];
                     }
-                    labyrinth[nextNeighborIndex].drawWalls();
+                    labyrinth[nextCell].drawWalls();
                 }
-                else if (neighbors[nextNeighbor] === 'east') {
+                else if (cardinal === 'east') {
                     // Voisin de droite : on lui indique que la cellule à l'ouest a été visité
-                    if (labyrinth[nextNeighborIndex].unknownNeighbors.hasOwnProperty('west')) {
-                        delete labyrinth[nextNeighborIndex].unknownNeighbors['west'];
+                    if (labyrinth[nextCell].unknownNeighbors.hasOwnProperty('west')) {
+                        delete labyrinth[nextCell].unknownNeighbors['west'];
                     }
-                    labyrinth[nextNeighborIndex].drawWalls();
+                    labyrinth[nextCell].drawWalls();
                 }
-                else if (neighbors[nextNeighbor] === 'south') {
+                else if (cardinal === 'south') {
                     // Voisin du bas : on lui indique que la cellule au nord a été visité
-                    if (labyrinth[nextNeighborIndex].unknownNeighbors.hasOwnProperty('north')) {
-                        delete labyrinth[nextNeighborIndex].unknownNeighbors['north'];
+                    if (labyrinth[nextCell].unknownNeighbors.hasOwnProperty('north')) {
+                        delete labyrinth[nextCell].unknownNeighbors['north'];
                     }
-                    labyrinth[nextNeighborIndex].drawWalls();
+                    labyrinth[nextCell].drawWalls();
                 }
-                else if (neighbors[nextNeighbor] === 'west') {
-                    // Voisin de droite : on lui indique que la cellule à l'est a été visité
-                    if (labyrinth[nextNeighborIndex].unknownNeighbors.hasOwnProperty('east')) {
-                        delete labyrinth[nextNeighborIndex].unknownNeighbors['east'];
+                else if (cardinal === 'west') {
+                    // Voisin de gauche : on lui indique que la cellule à l'est a été visité
+                    if (labyrinth[nextCell].unknownNeighbors.hasOwnProperty('east')) {
+                        delete labyrinth[nextCell].unknownNeighbors['east'];
                     }
-                    labyrinth[nextNeighborIndex].drawWalls();
+                    labyrinth[nextCell].drawWalls();
                 }
                 // Et on la visite
-                search(nextNeighborCoord[0], nextNeighborCoord[1]);
+                search(nextCell);
             }
         }
     }
@@ -189,7 +180,7 @@ let Labyrinthe = (() => {
     function resizeGamefield() {
         let cellWidth;
         // On calcule d'abord le ratio
-        if (gameField.clientHeight > (gameField.clientHeight * cols / rows)) {
+        if (gameField.clientHeight < (gameField.clientWidth * rows / cols)) {
             // On tient en hauteur
             cellWidth = gameField.clientHeight / rows;
         }
@@ -199,10 +190,8 @@ let Labyrinthe = (() => {
         }
 
         // On redimensionne chaque cellule
-        for (let y = 0; y < rows; y++) {
-            for (let x = 0; x < cols; x++) {
-                labyrinth[x + y * cols].setSize(cellWidth);
-            }
+        for (let cell = 0; cell < rows * cols; cell++) {
+            labyrinth[cell].setSize(cellWidth);
         }
     }
 
@@ -211,7 +200,7 @@ let Labyrinthe = (() => {
      * du labyrinthe.  Par défaut le labyrinthe fait 35 colonnes par 20 lignes.
      * @param {HTMLDivElement} gameContainer Le div container du jeu.
      * @param {int} col Le nombre de colonnes du labyrinthe.
-     * @param {int} row Le nombre de ligne du labyrinthe.
+     * @param {int} row Le nombre de lignes du labyrinthe.
      */
     function setGamefield(gameContainer, col = 35, row = 20) {
         labyrinth = [];
@@ -222,18 +211,9 @@ let Labyrinthe = (() => {
         // On génère la grille de base
         for (let y = 0; y < rows; y++) {
             for (let x = 0; x < cols; x++) {
-                let hasEastWall = false;
-                let hasSouthWall = false;
-                if (y === (rows - 1)) {
-                    hasSouthWall = true;
-                }
-                if (x === (cols - 1)) {
-                    hasEastWall = true;
-                }
                 let cellToAdd = document.createElement('laby-cell');
                 cellToAdd.initCell(x, y);
-                cellToAdd.backgroundColor = '#888';
-                cellToAdd.initWalls(hasEastWall, hasSouthWall);
+                cellToAdd.initWalls(x === (cols - 1), y === (rows - 1));
                 labyrinth[x + y * cols] = cellToAdd;
                 gameField.appendChild(labyrinth[x + y * cols]);
             }
@@ -248,8 +228,8 @@ let Labyrinthe = (() => {
      * Démarre le jeu.
      */
     function startGame() {
-        // On commence la génération par la case x = 0 et y = 0, en haut à gauche
-        search(0, 0);
+        // On commence la génération
+        search();
     }
 
     return {
