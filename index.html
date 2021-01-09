@@ -17,6 +17,25 @@
             </div>
         </div>
         <div class="row">
+            <div class="col-12 text-center" id="game-control">
+                <div class="container-fluid">
+                    <div class="row">
+                        <div class="col-5">
+                            <label for="row-selector" class="form-label">Lignes</label>
+                            <input type="number" id="row-selector" value="20" class="form-control"/>
+                        </div>
+                        <div class="col-5">
+                            <label for="col-selector" class="form-label">Colonnes</label>
+                            <input type="number" id="col-selector" value="35" class="form-control"/>
+                        </div>
+                        <div class="col-2 d-flex">
+                            <button type="button" class="btn btn-primary w-100 justify-content-center" id="genButton">Générer</button>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+        <div class="row">
             <div class="col-10 offset-1" id="game-container"></div>
         </div>
     </div>
