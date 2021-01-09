@@ -5,6 +5,7 @@ class LabyCell extends HTMLElement {
         super();
         this.row = 0;
         this.col = 0;
+        this.neighbors = {};
     }
     setSize(cellWidth) {
         this.style.position = 'absolute';
@@ -113,26 +114,23 @@ class Labyrinthe {
                     if (this.labyrinth[nextCell].neighbors.hasOwnProperty('south')) {
                         delete this.labyrinth[nextCell].neighbors['south'];
                     }
-                    this.labyrinth[nextCell].drawWalls();
                 }
                 else if (cardinal === 'east') {
                     if (this.labyrinth[nextCell].neighbors.hasOwnProperty('west')) {
                         delete this.labyrinth[nextCell].neighbors['west'];
                     }
-                    this.labyrinth[nextCell].drawWalls();
                 }
                 else if (cardinal === 'south') {
                     if (this.labyrinth[nextCell].neighbors.hasOwnProperty('north')) {
                         delete this.labyrinth[nextCell].neighbors['north'];
                     }
-                    this.labyrinth[nextCell].drawWalls();
                 }
                 else if (cardinal === 'west') {
                     if (this.labyrinth[nextCell].neighbors.hasOwnProperty('east')) {
                         delete this.labyrinth[nextCell].neighbors['east'];
                     }
-                    this.labyrinth[nextCell].drawWalls();
                 }
+                this.labyrinth[nextCell].drawWalls();
                 this.search(nextCell);
             }
         }

@@ -17,12 +17,13 @@ class LabyCell extends HTMLElement {
     public wasVisited?: boolean;
     public eastWall?: boolean;
     public southWall?: boolean;
-    public neighbors?: Neighbors;
+    public neighbors: Neighbors;
 
     public constructor() {
         super();
         this.row = 0;
         this.col = 0;
+        this.neighbors = {};
     }
 
     /**
@@ -218,40 +219,29 @@ class Labyrinthe {
                 // Si non visité, on lui indique que la cellule courante est visitée
                 if (cardinal === 'north') {
                     // Voisin du haut : on lui indique que la cellule du sud a été visité
-                    // @ts-ignore
                     if (this.labyrinth[nextCell].neighbors.hasOwnProperty('south')) {
-                        // @ts-ignore
                         delete this.labyrinth[nextCell].neighbors['south'];
                     }
-                    this.labyrinth[nextCell].drawWalls();
                 }
                 else if (cardinal === 'east') {
                     // Voisin de droite : on lui indique que la cellule à l'ouest a été visité
-                    // @ts-ignore
                     if (this.labyrinth[nextCell].neighbors.hasOwnProperty('west')) {
-                        // @ts-ignore
                         delete this.labyrinth[nextCell].neighbors['west'];
                     }
-                    this.labyrinth[nextCell].drawWalls();
                 }
                 else if (cardinal === 'south') {
                     // Voisin du bas : on lui indique que la cellule au nord a été visité
-                    // @ts-ignore
                     if (this.labyrinth[nextCell].neighbors.hasOwnProperty('north')) {
-                        // @ts-ignore
                         delete this.labyrinth[nextCell].neighbors['north'];
                     }
-                    this.labyrinth[nextCell].drawWalls();
                 }
                 else if (cardinal === 'west') {
                     // Voisin de gauche : on lui indique que la cellule à l'est a été visité
-                    // @ts-ignore
                     if (this.labyrinth[nextCell].neighbors.hasOwnProperty('east')) {
-                        // @ts-ignore
                         delete this.labyrinth[nextCell].neighbors['east'];
                     }
-                    this.labyrinth[nextCell].drawWalls();
                 }
+                this.labyrinth[nextCell].drawWalls();
                 // Et on la visite
                 this.search(nextCell);
             }
