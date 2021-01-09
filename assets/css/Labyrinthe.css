@@ -1,0 +1,10 @@
+#game-header {
+    height: 10vh;
+}
+#game-control {
+    height: 10vh;
+}
+#game-container {
+    position: relative;
+    height: 80vh;
+}
