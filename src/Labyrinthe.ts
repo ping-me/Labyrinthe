@@ -1,7 +1,6 @@
 /**
  * Classe représentant les voisins
  */
-
 class Neighbors {
     public north?: [number, number];
     public east?: [number, number];

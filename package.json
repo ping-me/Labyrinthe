@@ -1,0 +1,22 @@
+{
+  "name": "labyrinthe",
+  "version": "1.0.0",
+  "description": "Labyrinthe game in Typescript",
+  "main": "index.html",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/ping-me/Labyrinthe.git"
+  },
+  "author": "Ping YANG",
+  "license": "ISC",
+  "bugs": {
+    "url": "https://github.com/ping-me/Labyrinthe/issues"
+  },
+  "homepage": "https://github.com/ping-me/Labyrinthe#readme",
+  "devDependencies": {
+    "typescript": "^4.1.3"
+  }
+}
